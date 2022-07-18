@@ -207,7 +207,7 @@ export default {
           })
         }
       }
-        }, 2000);
+        }, 5000);
         // .then(this.postOrder,)
       }
       else{
