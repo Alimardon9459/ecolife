@@ -148,10 +148,12 @@ export default {
         })
         // foydalanuvchilarni ro'yxatini api da olish
         console.log("salom");
-        fetch('http://adminmax.pythonanywhere.com/user/')
+        setTimeout(() => {
+          fetch('http://adminmax.pythonanywhere.com/user/')
         .then(response => response.json())
         .then(data => (this.users = data))
         console.log(this.users);
+        }, 3000);
         setTimeout(() => {
           console.log(this.users);
            // foydalanuvchini tekshirish 3 bosqichli va uni  idsini olish
