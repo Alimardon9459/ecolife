@@ -70,9 +70,9 @@
 import { ref } from '@vue/reactivity';
 import { mapMutations, mapState } from 'vuex';
 import Pusher from 'pusher-js'
- Pusher.logToConsole = true;
+//  Pusher.logToConsole = true;
 
-    var pusher = new Pusher('1d0bd70d1290c50eab32', {
+    var pusher = new Pusher('47943dc538be44a0184b', {
       cluster: 'ap2'
     });
 
@@ -153,7 +153,7 @@ export default {
         .then(response => response.json())
         .then(data => (this.users = data))
         console.log(this.users);
-        }, 3000);
+        }, 1000);
         setTimeout(() => {
           console.log(this.users);
            // foydalanuvchini tekshirish 3 bosqichli va uni  idsini olish
@@ -209,7 +209,7 @@ export default {
           })
         }
       }
-        }, 5000);
+        }, 2000);
         // .then(this.postOrder,)
       }
       else{
