@@ -1,20 +1,20 @@
 <template>
-  <div class="q-mt-xl">
-    <div class="w-100pr h-70px  content-center">
+  <div class="q-mt-xl row wrap">
+    <div class="w-100pr h-70px  ">
       <div class="text-h5 mt-10px">
-        Featured Products
+        Eng kerakli mahsulotlar
       </div>
       <div class="text-grey ">
         Add featured products to weekly line up
       </div>
     </div>
 
-    <div class="w-100pr h-433px bg-white  row wrap justify-between items-start content-start">
-      <div class=" cart w-24pr h-40pr  mt-22px row justify-center content-center" v-for="cart in carts" :key="cart.id">
-        <div class="w-93pr h-90pr row  justify-between items-center content-center">
+    <div class="w-100pr pb-100px bg-white row wrap justify-between items-start content-start">
+      <div class=" cart w-270px q-pb-md mt-22px row justify-center " v-for="cart in carts" :key="cart.id">
+        <div class="w-93pr row justify-between items-center ">
           <div class="w-41pr h-77pr">
             <q-img class="w-90pr h-100pr" :src="cart.src" alt="">
-              <div class="search w-100pr h-100pr row content-center justify-center" style="background: none;">
+              <div class="search w-100pr h-100pr row  justify-center" style="background: none;">
                 <q-icon class="icon" size="25px" name="search" />
               </div>
             </q-img>
@@ -26,7 +26,7 @@
             <div>
               <a class="href text-subtitle1 text-weight-bold text-black" href="">{{ cart.juicy }}</a>
             </div>
-            <div class="row items-center">
+            <div class="row no-wrap items-center">
               <q-icon :name="cart.icon" color="yellow" size="17px" />
               <q-icon :name="cart.icon" color="yellow" size="17px" />
               <q-icon :name="cart.icon" color="yellow" size="17px" />
@@ -35,7 +35,7 @@
             </div>
             <div>
               <del class="text-grey">{{ cart.del }}</del>
-              <span class="ml-5px text-dark text-subtitle1">{{ cart.span }}</span>
+              <span class="ml-5px  text-dark text-subtitle1">{{ cart.span }}</span>
             </div>
           </div>
         </div>

@@ -67,6 +67,9 @@
       </div>
       
     </div>
+    <div class="w-100pr h-100vh " v-if="products.length<1 ? true : false">
+            
+    </div>
   </div>
 </template>
 
@@ -145,6 +148,7 @@ export default {
             id:this.products[i].id,
             name: this.products[i].nomi,
             mass:this.products[i].kilogramm,
+            tip:this.products[i].tip,
             liters:this.products[i].litri,
             quantity:this.products[i].soni,
             oldPrice: this.products[i].narx,

@@ -1,5 +1,5 @@
 <template >
-    <div class="w-100pr p-50px ">
+    <div class="w-100pr row wrap justif-center p-20px">
         <div class="w-100pr text-center fs-32px">
             Buyurtmalar
         </div>
@@ -60,7 +60,7 @@
                     
                     <q-card-section class="q-pt-none ">
                         <div class="w-100pr row justify-center">
-                            <q-btn :disable="order.ready.length==0  ? false : true"  @click="Preparation(i)" class="bg-yellow">Tayyorlash</q-btn>
+                            <q-btn   @click="Preparation(i)" :disable="order.ready.length==1 ? false : true"  class="bg-yellow">Tayyorlash</q-btn>
                         </div>
                         <div class="mt-20px w-100pr row justify-center">
                             <q-btn :disable="order.ready.length==11 ? false : true" @click="Ready(i)" class="bg-green-6">Tayyor</q-btn>
@@ -75,8 +75,8 @@
                     :class="order.ready" 
                 >
                 
-                    <div class="  row justify-around">
-                        <div v-for="product in order.orderForUser" :key="product" class=" m-30px bg-white  br-10px products p-20px w-300px">
+                    <div class=" w-100pr row justify-between">
+                        <div v-for="product in order.orderForUser" :key="product" class=" m-15px bg-white  br-10px products p-10px w-150px">
                             <div class="w-100pr">
                                 <div class="fs-18px">Nomi:{{product.product_name}}</div>
                                 <q-separator  size="1px" class="bg-grey-7" />
@@ -125,7 +125,7 @@
                     </div>
                     <div class="m-20px pb-20px row wrap justify-between">
                         <div class="w-btn row justify-center">
-                            <q-btn  @click="Preparation(i)" :disable="order.ready.length==0  ? false : true" padding="10px 20px" class=" bg-yellow">Tayyorlash</q-btn>
+                            <q-btn  @click="Preparation(i)" :disable="order.ready.length==1 ? false : true"  padding="10px 20px" class=" bg-yellow">Tayyorlash</q-btn>
                         </div>
                         <div class=" w-btn row justify-center">
                             <q-btn padding="10px 20px" :disable="order.ready.length==11 ? false : true" @click="Ready(i)" class="bg-green-6">Tayyor</q-btn>
@@ -144,11 +144,12 @@ export default {
         const OrdersApi=ref([]) 
         const a=ref(0)
         onMounted(()=>{
-            const getComment = async () => {
+            // user malumotlarini olish
+            const getUserApi = async () => {
                 try {
                     const Fetch_Product = await axios.get('http://adminmax.pythonanywhere.com/user/');
                     OrdersApi.value = Fetch_Product.data;
-                    console.log(OrdersApi.value[0].orderForUser.length);
+                    
                     
                 } 
                 catch (err) {
@@ -156,43 +157,55 @@ export default {
                 }
 
             };
+             
+             setInterval(() => getUserApi() , 2000)
             
-            for(let i=0; i<2;i++){
-                a.value++
-                if(a.value==1){
-                    let TimeOff=setInterval(() => getComment() , 1000);
-                setTimeout(()=>{
-                    clearInterval(TimeOff)
-                },2000)
-                }
-                else{
-                    setInterval(() => getComment() , 20000)
-                }
-            }
+            // for(let i=0; i<2;i++){
+            //     a.value++
+            //     if(a.value==1){
+            //         let TimeOff=setInterval(() => getUserApi() , 1000);
+            //     setTimeout(()=>{
+            //         clearInterval(TimeOff)
+            //     },2000)
+            //     }
+            //     else{
+            //         setInterval(() => getUserApi() , 2000)
+            //     }
+            // }
             
         })
         return{
             OrdersApi
         }
     },
+    methods:{
+        // qadoqlovchi qadoqlashni boshlaganini bildiradi va bu user dagi ready qiymati o'zgaradi
+        Preparation(i){
+            fetch(`http://adminmax.pythonanywhere.com/user/${this.OrdersApi[i].id}/`, {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    ready:"Preparation"
+                }) 
+            })
+        },
+        // qadoqlovchi qadoqlab bo'lganini bildiradi va bu user dagi ready qiymati o'zgaradi
+        Ready(i){
+            fetch(`http://adminmax.pythonanywhere.com/user/${this.OrdersApi[i].id}/`, {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    ready:"Ready"
+                }) 
+            })
+        }
+    }
 }
 </script>
 <style scoped>
     .bg-w{
         background: white;
     }
-    .w-expansion{
-        width: 50%;
-    }
-    .w-btn{
-        width: 50%;
-    }
-    .q-item{
-        padding: 0px;
-    }
-    .q-card__section--vert {
-    padding: 8px;
-    } 
     .Preparation{
         background:  linear-gradient(
             to bottom,
@@ -243,15 +256,24 @@ export default {
             padding-bottom: 0px;
         }
     }
-    @media screen and (max-width:840px) {
+    @media screen and (max-width:840px ) and (min-width: 500px) {
         .dblcard{
-            width:390px ;
+            width:600px ;
             
+        }
+    }
+    @media screen and (max-width: 500px) {
+        .dblcard{
+            width:350px ;
+            
+        }
+        .m-15px{
+            margin: 10px;
         }
     }
     @media screen and (min-width:841px) and ( max-width:1200px) {
         .dblcard{
-            width:750px ;
+            width:auto; ;
             
         }
     }

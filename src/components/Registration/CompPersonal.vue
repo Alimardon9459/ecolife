@@ -85,6 +85,7 @@ export default {
     
     const latitude=ref('')
     const longitude=ref('')
+    const user_position=ref('')
     // lakatsiyani olish funksiyasi
     const getLocation = ()=>{ 
       if(navigator.geolocation){ 
@@ -92,7 +93,11 @@ export default {
           location.value = position 
           latitude.value = location.value.coords.latitude 
           longitude.value = location.value.coords.longitude  
+          user_position.value= latitude.value+','+longitude.value
+          console.log(user_position.value);
+
         }) 
+        
       } 
       else{ 
         alert('error'); 
@@ -102,7 +107,8 @@ export default {
     return{
       getLocation,
       latitude,
-      longitude
+      longitude,
+      user_position
     }
   },
   
@@ -125,7 +131,7 @@ export default {
     
     setOrder(){
       // foydalanusvchi ma'lumotlarini POST qilish
-      if(this.costs.length >=1){
+      if(this.costs.length >=0){
         fetch('http://adminmax.pythonanywhere.com/user/', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -133,8 +139,10 @@ export default {
             userName: this.fullname,
             phoneNumber: this.telnumber,
             address: this.address,
+            address_link:this.user_position,
             total:this.shot  ,
-            ready:"bu",
+            ready:"1",
+            time:"u"
             
           }) 
         })
@@ -143,6 +151,7 @@ export default {
         fetch('http://adminmax.pythonanywhere.com/user/')
         .then(res=>{return res.json()})
         .then(this.result,)
+        .then(this.postOrder,)
       }
       else{
         alert("sizda hech qanday buyurtma yo'q")
@@ -151,7 +160,10 @@ export default {
     },
     result(results){
       this.users = results
-      // foydalanuvchini tekshirish 3 bosqichli va uni  idsini olish
+      console.log(this.users);
+    },
+    postOrder(){
+       // foydalanuvchini tekshirish 3 bosqichli va uni  idsini olish
       for(let i=0; i<this.users.length; i++){
         if(this.users[i].userName== this.fullname && this.users[i].phoneNumber==this.telnumber && this.users[i].total==this.shot){
           this.usersId=this.users[i].id
@@ -159,20 +171,51 @@ export default {
       }
       // olingan id bo'yicha foydalanuvchi olgan maxsulotlarni POST qilish
       for(let i=0; i<this.costs.length;i++){
-        fetch('http://adminmax.pythonanywhere.com/orders/', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            product_name: this.costs[i].name,
-            weight: this.costs[i].amount,
-            litr: this.costs[i].liters,
-            quantity:this.costs[i].amount ,
-            summa:this.costs[i].price,
-            orderForUser:this.usersId
-          }) 
-        })
+        if(this.costs[i].tip==true && this.costs[i].liters!=null ){
+          fetch('http://adminmax.pythonanywhere.com/orders/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              product_name: this.costs[i].name,
+              litr: this.costs[i].liters,
+              quantity:this.costs[i].amount ,
+              summa:this.costs[i].overallPrice,
+              weight:null,
+              orderForUser:this.usersId
+            }) 
+          })
+          
+        }
+        else if(this.costs[i].tip==true && this.costs[i].liters==null ){
+          fetch('http://adminmax.pythonanywhere.com/orders/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              product_name: this.costs[i].name,
+              quantity:this.costs[i].amount ,
+              litr:null,
+              weight:null,
+              summa:this.costs[i].overallPrice,
+              orderForUser:this.usersId
+            }) 
+          })
+        }
+        else if(this.costs[i].tip==false  ){
+          fetch('http://adminmax.pythonanywhere.com/orders/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              product_name: this.costs[i].name,
+              weight:this.costs[i].amount,
+              litr:null,
+              quantity:null,
+              summa:this.costs[i].overallPrice,
+              orderForUser:this.usersId
+            }) 
+          })
+        }
       }
-    },
+    }
 
       
   },

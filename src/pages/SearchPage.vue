@@ -1,10 +1,12 @@
 <template >
-    <div class=" w-100pr h-100vh " >
+    <div class=" w-100pr mb-50px" >
+        
         <div v-if="search_product!=undefined ? true : false" >
             <Suspense>
                 <Shopcards :products="search_product"   />
             </Suspense>
         </div>
+        
     </div>
 </template>
 <script>

@@ -16,14 +16,14 @@
       </div>
     </div>
 
-    <div class="w-100pr h-460px row">
+    <!-- <div class="w-100pr h-460px row">
       <div class="w-50pr h-100pr">
         <q-img src="http://demo.posthemes.com/pos_ecolife_fastfood/img/cms/5_1.jpg" />
       </div>
       <div class="w-50pr h-100pr">
         <q-img src="http://demo.posthemes.com/pos_ecolife_fastfood/img/cms/6_1.jpg" />
       </div>
-    </div>
+    </div> -->
 
     <div class="container row wrap justify-center">
       <div class="content">

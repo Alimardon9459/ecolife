@@ -1,35 +1,32 @@
 <template >
   <div>
-    <div class="w-100pr h-950px  row  justify-between items-start content-start">
-      <div class=" w-35pr h-90pr bg-grey-1">
-        <div class="w-100pr h-7pr bg-white">
-          <div class="text-h5">
-            Hot Deals
-          </div>
-          <div class="text-grey">
-            Add hot products to weekly line up
-          </div>
+    <div class="w-100pr ">
+      <div class="w-100pr h-7pr bg-white">
+        <div class="text-h5">
+          Mega chegirmalar
         </div>
-        <CompCarusel2 />
+        <div class="text-grey">
+          Har haftalik mega chegiramalar
+        </div>
       </div>
-
-      <div class="w-63pr h-95pr ml-5px  row wrap justify-between items-start content-start">
+      <CompCarusel2 :products="productMega" />
+     
+      <div class="w-100pr  ">
         <div class="w-100pr h-7pr bg-white">
           <div class="text-h5">
-            New Arrivals
+            Chegirmalar
           </div>
           <div class="text-grey">
-            Add new products to weekly line upf
+            Har oylik chegiramalar
           </div>
-          
         </div>
 
-        
+        <div class="w-95pr row wrap justify-between ml-5pr  ">
           <div  v-for="(product , i) in products" :key="i">
             <div v-if="product != undefined ? true : false " class="cart w-205px h-320px  q-mt-md row justify-center content-center ">
-              <div   class="w-90pr h-90pr">
+              <div class="w-90pr h-90pr">
                 <div class="h-45pr">
-                  <div  class="w-100pr h-100pr" v-for="imgSrc in product.rasmlari" :key="imgSrc" >
+                  <div class="w-100pr h-100pr" v-for="imgSrc in product.rasmlari" :key="imgSrc" >
                     <q-img height="100%" :src="imgSrc.link">
                       <div class="search w-100pr h-100pr row content-center justify-center" style="background: none;">
                         <q-icon class="icon" size="25px" name="search" />
@@ -38,8 +35,10 @@
                   </div>
                 </div>
                 <div class="text w-90pr h-30pr mt-20px ml-10px ">
-                  <a class="href fs-12px " href="">SDUDIO DECIGN</a><br>
-                  <a class="a text-subtitle1 text-weight-bold text-black" href="">{{ product.nomi }} </a>
+                  <div class="row justify-between" >
+                    <span>{{ product.nomi }}</span>
+                    <span v-if="product.litri.length>0 ? true : false " >{{product.litri}}L</span> 
+                  </div>
                   <div class="row items-center">
                     <q-icon name="star" color="yellow" size="17px" />
                     <q-icon name="star" color="yellow" size="17px" />
@@ -48,7 +47,7 @@
                     <q-icon name="star" color="yellow" size="17px" />
                   </div>
                   <div>
-                    <del v-if=" product.narx.length!=0 ? true :false " class="text-grey">{{ product.narx }}$</del>
+                    <del v-if=" product.narx.length!=0 ? true :false " class="text-grey">{{ product.narx }}So'm</del>
                     <span class="ml-5px text-dark text-subtitle1">{{ product.chegirma_narx }}$</span>
                     <q-icon class="ml-20px" @click="addBacket(i)" color="yellow" size="25px" name="shopping_cart" />
                   </div>
@@ -57,9 +56,9 @@
               <q-dialog class="MyDialog bg-transparent" full-width v-model="toolbar">
                 <q-card class="w-90pr ">
                   <div class="w-100pr  bg-dark row items-center justify-center" >
-                  
+
                     <div class="text-white w-90pr fs-20px_md-16px_sm-12px text-center">
-                      <q-icon name="check" class="mr-10px" size="24px" />  Ushbu maxsulot Savatga qo'shildi 
+                      <q-icon name="check" class="mr-10px" size="24px" />  Ushbu maxsulot Savatga qo'shildi
                     </div>
                     <div class="w-10pr row justify-end">
                       <q-icon @click="dialogVisable" name="close" class=" text-white mr-10px" size="24px" />
@@ -70,6 +69,8 @@
               </q-dialog>
             </div>
           </div>
+        </div>
+          
       </div>
     </div>
   </div>
@@ -91,6 +92,7 @@ computed:{
 setup() {
       const ProductsApi=ref([])
       const productFilter=ref([])
+      const productMega=ref([])
       const products=ref([])
       onMounted(()=>{
         const getComment = async () => {
@@ -105,9 +107,16 @@ setup() {
         };
         const getFilter = async ()=>{
           productFilter.value=[]
+          productMega.value=[]
+          // productlarni  saralash
           for(let j=0 ; j <  ProductsApi.value.length ; j++ ){
-            if( ProductsApi.value[j].chegirma_foizi != null ){
+            // chegirmasi bo'lgan  productlarni  saralash
+            if( ProductsApi.value[j].chegirma_foizi.length>0 && ProductsApi.value[j].mega == false ){
               productFilter.value.push(ProductsApi.value[j])
+            }
+            // mega chegirmada bo'lgan productlarni  saralash
+            if(ProductsApi.value[j].mega == true){
+              productMega.value.push(ProductsApi.value[j])
             }
           }
           products.value=[]
@@ -132,6 +141,7 @@ setup() {
       ProductsApi,
       productFilter,
       products,
+      productMega
       
     }
   },
@@ -194,6 +204,7 @@ setup() {
             id:this.products[i].id,
             name: this.products[i].nomi,
             mass:this.products[i].kilogramm,
+            tip:this.products[i].tip,
             liters:this.products[i].litri,
             quantity:this.products[i].soni,
             oldPrice: this.products[i].narx,
@@ -228,11 +239,15 @@ setup() {
 </script>
 <style scoped>
 @media screen and ( max-width:900px ) and (min-width:500px) {
-   
+
    .text-subtitle1 , .text-subtitle2 , .content-info{
     font-size: 12px;
    }
-}   
+   .icon-btn-check{
+    display: none;
+   }
+}
+
 .text {
   line-height: 2.3;
 }
@@ -280,4 +295,5 @@ setup() {
   color: #fff;
   transition: 1s;
 }
+
 </style>

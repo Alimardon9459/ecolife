@@ -13,15 +13,12 @@
         <div class="row w-85pr h-50px mt-10px items-center justify-between">
           <div>
             <span class="span q-ml-xl text-subtitle2 text-weight-bold text-black"> <router-link to="/shop">Shop</router-link> </span>
-            <!--<span class="span q-ml-xl text-subtitle2 text-weight-bold text-black">Fresh Vegetable</span>
-            <span class="span q-ml-xl text-subtitle2 text-weight-bold text-black">Prices Drop</span>
-            <span class="span q-ml-xl text-subtitle2 text-weight-bold text-black">Contact us</span> -->
           </div>
           <div class="w-40pr_md-45pr_sm-50pr inp-search-max">
             <router-link to="search">
-              <q-input rounded outlined v-model="search_massage" label="Mahsulotlarni qidirish" @keypress.enter="SendSearchMassage()" >
+              <q-input rounded outlined v-model="search_massage" label="Mahsulotlarni qidirish" >
                 <template v-slot:append>
-                  <q-icon @click="SendSearchMassage()" name="search" />
+                  <q-icon name="search" />
                 </template>
               </q-input>
             </router-link>
@@ -36,21 +33,24 @@
             </router-link>
           </div>
         </div>
+        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
-      <div class="w-100pr navbar mt-20px row justify-center items-center" >
+      <!-- <div class="w-100pr navbar mt-20px row justify-center items-center" >
         <div  class="w-90pr search-inp">
             <router-link to="search">
-              <q-input class="mt-10px mb-5px" rounded outlined v-model="search_massage" label="Mahsulotlarni qidirish" @keypress.enter="SendSearchMassage()" >
+              <q-input class="mt-10px mb-5px" rounded outlined v-model="search_massage" label="Mahsulotlarni qidirish" >
                 <template v-slot:append>
-                  <q-icon @click="SendSearchMassage()" name="search" />
+                  <q-icon name="search" />
                 </template>
               </q-input>
             </router-link>
          
           </div>
-      </div>
+      </div> -->
     </q-header>
-
+    <q-drawer v-model="rightDrawerOpen" side="right" bordered>
+      <!-- drawer content -->
+    </q-drawer>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -127,7 +127,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import axios from "axios";
 export default {
 computed:{
@@ -136,6 +136,7 @@ computed:{
 setup() {
   // ko'ringanida apidan maxsulotlarni oladi
       const ProductsApi=ref([])
+      const rightDrawerOpen = ref(false)
       onMounted(()=>{
         const getComment = async () => {
           try {
@@ -153,15 +154,22 @@ setup() {
   
     )
     return {
-      ProductsApi,      
+      ProductsApi,
+      rightDrawerOpen,
+      toggleRightDrawer () {
+        rightDrawerOpen.value = !rightDrawerOpen.value
+      }      
     }
   },
 
   data() {
     return {
       email:"",
+      product_name:'',
+      search_name:'',
       search_massage:"",
       search_products:[],
+      search_test:false,
       dense:true,
     }
   },
@@ -170,23 +178,29 @@ setup() {
   },
   //vuex da productlarni olish
   methods:{
-    // qidirish tugmasi bosilganid aqidirilayotgan maxulot ni topib uni  search_products ga qo'shib qo'yadi va vuex ga jo'natadi
+    // qidirish tugmasi bosilganida qidirilayotgan maxulot ni topib uni  search_products ga qo'shib qo'yadi va vuex ga jo'natadi
     ...mapMutations(['SEND_SEARCH_PRODUCT']),
     SendSearchMassage(){
       this.search_products=[]
       for(let j=0;j<this.ProductsApi.length;j++){
-        if(this.search_massage==this.ProductsApi[j].nomi){
+        this.product_name=this.ProductsApi[j].nomi.toLowerCase()
+        this.search_name=this.search_massage.toLowerCase()
+        this.search_test=this.product_name.includes(this.search_name)
+        if(this.search_test){
           this.search_products.push(this.ProductsApi[j])
-          this.search_massage=""
         }
       }
       this.SEND_SEARCH_PRODUCT(this.search_products)  
       
+    },
+  },
+  watch:{
+    search_massage() {
+      this.SendSearchMassage()
     }
-    
-  }
 
-};
+  }
+}
 </script>
 <style scoped>
 .fs-18px{

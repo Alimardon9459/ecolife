@@ -1,32 +1,20 @@
 <template>
-  <q-page>
-    <div  class="w-100pr  row justify-center wrap mt-2pr">
-      <div class=" w-100pr text-center  text-h5">Filter By</div>
-        <div class="h-180px mt-20px w-90pr row justify-between ">
-          <div v-if="categoriya != undefined  ? true :false " class="row w-40pr ">
-            <div class=" w-100pr text-center text-h6">Kartigoriyalar</div>
-            <div   class=" w-100pr row  justify-between">
-              <div v-for="(categoriy ,i) in categoriya " :key="i" class="mt-15px" >
-                <q-btn rounded @click="getFilter(i)" class=" fs-18px">{{categoriy.categoriya_nomi}}</q-btn>
-              </div>
-            </div> 
+  <q-page>    
+    <div class="h-180px mt-20px w-100pr row justify-center ">
+      <div v-if="categoriya != undefined  ? true :false " class="row w-60pr_md-80pr_sm-95pr ">
+        <div class=" w-100pr text-center text-h6">Kartigoriyalar</div>
+        <div   class=" w-100pr row  justify-between">
+          <div v-for="(categoriy ,i) in categoriya " :key="i" class="mt-15px" >
+            <q-btn rounded @click="getFilter(i)" class=" fs-18px">{{categoriy.categoriya_nomi}}</q-btn>
           </div>
-          <div class="column w-40pr">
-            <span class="text-h6">Tags</span>
-            <div class="column mt-20px">
-              <div>
-                <q-btn @click="getCommen" class="btn mr-20px mb-20px" rounded label='cookies'/>
-                <q-btn class="btn mb-20px" rounded label='cream cake'/>
-              </div>
-              <div>
-                <q-btn class="btn mb-20px mr-20px" rounded label='chocolate cake'/>
-                <q-btn class="btn mb-20px " rounded label='Rose cookies'/>
-              </div>
-            </div>
+          <div class="mt-15px" >
+            <q-btn rounded @click="getFilterClose(i)" class=" fs-18px">Barchasi</q-btn>
           </div>
-        </div>
+        </div> 
+      </div>
     </div>
-    <div class="w-100pr mt-7px ">
+   
+    <div class="w-100pr ">
       <div class="w-100pr text-center fs-22px_md-20px_sm-18px mt-20px " >
         {{categoriyPproductName}}
       </div>
@@ -106,7 +94,12 @@ export default {
             this.visabeCateroriya=true
           }
         }
-      }  
+      } ,
+      getFilterClose(){
+        this.visabeProduct=true
+        this.visabeCateroriya=false
+        this.categoriyPproductName=""
+      } 
     }
      
 }

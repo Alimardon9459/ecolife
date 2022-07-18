@@ -14,9 +14,9 @@
             <div class="row w-100pr ">
               <div  class="w-70pr_md-100pr_sm-100pr">
                 <span class="mr-5pr text-red-9"> {{ cost.price }}$ </span>
-                <del v-if=" cost.skitka != null ? true :false " class="mr-5pr"> {{ cost.oldPrice }}$ </del>
+                <del v-if=" cost.skitka.length>0 ? true :false " class="mr-5pr"> {{ cost.oldPrice }}$ </del>
               </div>
-              <div v-if=" cost.skitka != null ? true :false ">
+              <div v-if=" cost.skitka.length>0 ? true :false ">
                 <span class="bg-black text-white pl-5px pr-5px p-3px">
                   -{{ cost.skitka }}%
                 </span>
