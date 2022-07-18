@@ -158,6 +158,7 @@ export default {
       for(let i=0; i<this.users.length; i++){
         if(this.users[i].userName== this.fullname && this.users[i].phoneNumber==this.telnumber && this.users[i].total==this.shot){
           this.usersId=this.users[i].id
+          console.log(this.usersId);
         }
       }
       // olingan id bo'yicha foydalanuvchi olgan maxsulotlarni POST qilish
