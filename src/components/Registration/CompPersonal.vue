@@ -150,8 +150,8 @@ export default {
         console.log("salom");
         fetch('http://adminmax.pythonanywhere.com/user/')
         .then(res=>{return res.json()})
-        .then(this.result,)
-        .then(this.postOrder,)
+        setTimeout(()=>{this.result},1000)
+        setTimeout(() => {this.postOrder}, 1200);
       }
       else{
         alert("sizda hech qanday buyurtma yo'q")
