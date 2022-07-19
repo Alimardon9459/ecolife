@@ -95,7 +95,7 @@ export default {
 
             setTimeout(()=>{
                 console.log(user_carrier.value) 
-                user_position.value='40.320730, 71.833490'
+                user_position.value=OrdersApi.value[i].address_link
                 console.log(user_position.value);
                 link_for_location.value=`https://www.google.si/maps/dir/${user_carrier.value}/${user_position.value}/@${user_carrier.value},14z/data=!4m4!4m3!1m1!4e1!1m0`
                 console.log(link_for_location.value);
