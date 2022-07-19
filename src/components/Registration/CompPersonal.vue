@@ -146,15 +146,27 @@ export default {
             
           }) 
         })
-        // foydalanuvchilarni ro'yxatini api da olish
-        console.log("salom");
-        setTimeout(() => {
-          fetch('http://adminmax.pythonanywhere.com/user/')
+        
+        .then(this.fetchUser)
+        .then(this.fildser_and_postOrder)
+      }
+      else{
+        alert("sizda hech qanday buyurtma yo'q")
+      }
+     
+    },
+    // foydalanuvchilarni ro'yxatini api da olish
+    fetchUser(){
+      setTimeout(() => {
+        fetch('http://adminmax.pythonanywhere.com/user/')
         .then(response => response.json())
         .then(data => (this.users = data))
         console.log(this.users);
-        }, 1000);
-        setTimeout(() => {
+      }, 1000);
+    },
+  
+    fildser_and_postOrder(){
+       setTimeout(() => {
           console.log(this.users);
            // foydalanuvchini tekshirish 3 bosqichli va uni  idsini olish
       for(let i=0; i<this.users.length; i++){
@@ -210,20 +222,8 @@ export default {
         }
       }
         }, 2000);
-        // .then(this.postOrder,)
-      }
-      else{
-        alert("sizda hech qanday buyurtma yo'q")
-      }
-     
-    },
-    
-    postOrder(){
-      setTimeout(() => {
-        
-      }, 1500);
-    }
 
+    }
       
   },
   

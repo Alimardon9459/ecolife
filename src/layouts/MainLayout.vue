@@ -14,6 +14,10 @@
           <div>
             <span class="span q-ml-xl text-subtitle2 text-weight-bold text-black"> <router-link to="/shop">Shop</router-link> </span>
           </div>
+         <div>
+          <router-link to="/carrier">Carrier</router-link>
+          <router-link class="ml-20px" to="/packer">Packer</router-link>
+         </div>
           <div class="w-40pr_md-45pr_sm-50pr inp-search-max">
             <router-link to="search">
               <q-input rounded outlined v-model="search_massage" label="Mahsulotlarni qidirish" >

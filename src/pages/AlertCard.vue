@@ -1,9 +1,9 @@
 <template>
   <div>
-    <for-alert/>
+    <!-- <for-alert/> -->
     <!-- <for-card/> -->
-    <!-- <ForShop /> -->
-    <a target="blanck" href="http://demo.posthemes.com/pos_ecolife_fastfood/en/">ef</a>
+    <ForShop />
+   
 
   </div>
 </template>
